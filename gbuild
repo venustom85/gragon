@@ -19,7 +19,15 @@ MAIN="int main(int argc, char** argv) { return $FUNC_NAME(argc, argv); }"
 EXEC=$CASE.run
 SRC=$CASE.cpp
 INC="-I. -I`pwd`"
+GR_LIB="`pwd`/common/gragon.a"
+
+
+if [ ! -e common/gragon.a ]; then
+    cd common
+    ./gar
+    cd ..
+fi
 
 cd $MODULE
 echo "$DECLARE $MAIN" > main.cpp
-(g++ $INC -o $EXEC main.cpp $SRC) && echo "Build success, use grun to show it"
+(g++ $INC -o $EXEC main.cpp $SRC $GR_LIB) && echo "Build success, use grun to show it"

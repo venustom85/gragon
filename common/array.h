@@ -4,14 +4,25 @@
 #include <iostream>
 #include <fstream>
 #include <new>
+#include <cstdio>
+
+#include "base.h"
+
+template <typename T> std::ostream & array_print(const T * begin, const T * end);
+template <typename T> std::ostream & array_print(const T * arr, int length);
+template <typename T> T * array_read(std::istream & in, int & length);
+template <typename T> T * array_read_from_file(const char * filename, int & length);
+template <typename T> void array_destroy(T * arr);
+template <typename T> T * array_expand(T * arr, int length);
 
 template <typename T>
 std::ostream & array_print(const T *begin, const T *end)
 {
+    std::cout << '[';
     while (begin < end) {
         std::cout << *begin++ << ' ';
     }
-    return std::cout;
+    return std::cout << ']';
 }
 
 template <typename T>
@@ -25,12 +36,12 @@ T * array_read(std::istream &in, int &length)
 {
     in >> length;
     if (!in) {
-        std::cerr << "NO length of array found in stream\n";
+        gragon::set_error_message("NO length of array found in stream");
         return NULL;
     }
 
-    if (length <= 0) {
-        std::cerr << "ERROR length of array: " << length << '\n';
+    if (length < 0) {
+        sprintf(gragon::get_error_buf(), "ERROR length of array: %d", length);
         return NULL;
     }
 
@@ -38,14 +49,14 @@ T * array_read(std::istream &in, int &length)
     try {
         array = new T[length];
     } catch (std::bad_alloc & e) {
-        std::cerr << "FAILED to allocate\n";
+        gragon::set_error_message("FAILED to allocate");
         return NULL;
     }
 
     for (int i = 0; i < length; ++i) {
         in >> array[i];
         if (!in) {
-            std::cerr << "UNABLE to read element[" << i << "]\n";
+            sprintf(gragon::get_error_buf(), "UNABLE to read element[%d]", i);
             array_destroy(array);
             return NULL;
         }
@@ -70,6 +81,25 @@ template <typename T>
 void array_destroy(T * arr)
 {
     delete[] arr;
+}
+
+template <typename T> 
+T * array_expand(T * arr, int length)
+{
+    if (length < 0) {
+        return NULL;
+    }
+
+    int new_len = length > 0 ? length * 2 : 1;
+
+    T * new_arr = new T[new_len];
+    for (int i = 0; i < length; ++i) {
+        new_arr[i] = arr[i];
+    }
+
+    array_destroy(arr);
+
+    return new_arr;
 }
 
 #endif

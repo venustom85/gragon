@@ -1,0 +1,3 @@
+#!/bin/bash
+
+(g++ -c *.cpp) && (ar rv gragon.a *.o) && (rm *.o)

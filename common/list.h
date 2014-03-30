@@ -5,6 +5,8 @@
 #include <fstream>
 #include <new>
 
+#include "base.h"
+
 template <typename T>
 struct ListNode
 {
@@ -21,12 +23,12 @@ ListNode<T> * list_read(std::istream &in, int &length)
 {
     in >> length;
     if (!in) {
-        std::cerr << "NO length of list found in stream\n";
+        gragon::set_error_message("NO length of list found in stream");
         return NULL;
     }
 
     if (length <= 0) {
-        std::cerr << "ERROR length of list: " << length << '\n';
+        sprintf(gragon::get_error_buf(), "ERROR length of list: %d", length);
         return NULL;
     }
 
@@ -37,7 +39,7 @@ ListNode<T> * list_read(std::istream &in, int &length)
     for (int i = 0; i < length; ++i) {
         in >> data;
         if (!in) {
-            std::cerr << "UNABLE to read list[" << i << "]\n";
+            sprintf(gragon::get_error_buf(), "UNABLE to read list[%d]", i);
             list_destroy(head);
             return NULL;
         }
@@ -52,7 +54,7 @@ ListNode<T> * list_read(std::istream &in, int &length)
                 tail = node;
             }
         } catch (std::bad_alloc & e) {
-            std::cerr << "FAILED to allocate list node [" << i << "]\n";
+            sprintf(gragon::get_error_buf(), "FAILED to allocate list node [%d]", i);
             list_destroy(head);
             return NULL;
         }
@@ -112,21 +114,23 @@ ListNode<T> * list_add_head_node(ListNode<T> * head)
 template <typename T>
 std::ostream & list_print(ListNode<T> * head)
 {
+    std::cout << '[';
     while (head != NULL) {
         std::cout << head->data << ' ';
         head = head->next;
     }
-    return std::cout;
+    return std::cout << ']';
 }
 
 template <typename T>
 std::ostream & list_print(ListNode<T> * begin, ListNode<T> * end)
 {
+    std::cout << '[';
     while (begin != NULL && begin != end) {
         std::cout << begin->data << ' ';
         begin = begin->next;
     }
-    return std::cout;
+    return std::cout << ']';
 }
 
 #endif
