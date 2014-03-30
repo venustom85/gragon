@@ -6,18 +6,18 @@
 #include <new>
 
 template <typename T>
-void array_print(const T *begin, const T *end)
+std::ostream & array_print(const T *begin, const T *end)
 {
-    while (begin != end) {
+    while (begin < end) {
         std::cout << *begin++ << ' ';
     }
-    std::cout << '\n';
+    return std::cout;
 }
 
 template <typename T>
-void array_print(const T *arr, int length)
+std::ostream & array_print(const T *arr, int length)
 {
-    array_print(arr, arr + length);
+    return array_print(arr, arr + length);
 }
 
 template <typename T>

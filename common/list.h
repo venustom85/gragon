@@ -65,7 +65,7 @@ template <typename T>
 ListNode<T> * list_read(std::istream &in)
 {
     int length = 0;
-    return list_read(in, length);
+    return list_read<T>(in, length);
 }
 
 template <typename T>
@@ -77,14 +77,14 @@ ListNode<T> * list_read_from_file(const char *filename, int &length)
         return NULL;
     }
 
-    return list_read(fin, length);
+    return list_read<T>(fin, length);
 }
 
 template <typename T>
 ListNode<T> list_read_from_file(const char *filename)
 {
     int length = 0;
-    return list_read_from_file(filename, length);
+    return list_read_from_file<T>(filename, length);
 }
 
 template <typename T>
@@ -107,6 +107,26 @@ ListNode<T> * list_add_head_node(ListNode<T> * head)
         head->prev = new_head;
     }
     return new_head;
+}
+
+template <typename T>
+std::ostream & list_print(ListNode<T> * head)
+{
+    while (head != NULL) {
+        std::cout << head->data << ' ';
+        head = head->next;
+    }
+    return std::cout;
+}
+
+template <typename T>
+std::ostream & list_print(ListNode<T> * begin, ListNode<T> * end)
+{
+    while (begin != NULL && begin != end) {
+        std::cout << begin->data << ' ';
+        begin = begin->next;
+    }
+    return std::cout;
 }
 
 #endif
