@@ -18,10 +18,11 @@ DECLARE="int $FUNC_NAME(int, char**);"
 MAIN="int main(int argc, char** argv) { return $FUNC_NAME(argc, argv); }"
 EXEC=$CASE.run
 SRC=$CASE.cpp
+INC="-I. -I`pwd`"
 
 cd $MODULE
 echo "$DECLARE $MAIN" > main.cpp
-g++ -o $EXEC main.cpp $SRC
+g++ $INC -o $EXEC main.cpp $SRC
 if [ -e $EXEC ]; then
     shift; shift;
     ./$EXEC $@
