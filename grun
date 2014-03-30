@@ -1,0 +1,30 @@
+#!/bin/bash
+
+usage()
+{
+    echo "usage: `basename $0` <module> <case> [param1 [param2 ...]]"
+}
+
+if [ $# -lt 2 ]; then
+    usage
+    exit
+fi
+
+MODULE=$1
+CASE=$2
+
+FUNC_NAME="${MODULE}_$CASE"
+DECLARE="int $FUNC_NAME(int, char**);"
+MAIN="int main(int argc, char** argv) { return $FUNC_NAME(argc, argv); }"
+EXEC=$CASE.run
+SRC=$CASE.cpp
+
+cd $MODULE
+echo "$DECLARE $MAIN" > main.cpp
+g++ -o $EXEC main.cpp $SRC
+if [ -e $EXEC ]; then
+    shift; shift;
+    ./$EXEC $@
+    rm $EXEC
+    rm main.cpp
+fi
