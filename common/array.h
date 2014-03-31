@@ -9,7 +9,9 @@
 #include "base.h"
 
 template <typename T> std::ostream & array_print(const T * begin, const T * end);
+template <typename T> std::ostream & array_println(const T * begin, const T * end);
 template <typename T> std::ostream & array_print(const T * arr, int length);
+template <typename T> std::ostream & array_println(const T * arr, int length);
 template <typename T> T * array_read(std::istream & in, int & length);
 template <typename T> T * array_read_from_file(const char * filename, int & length);
 template <typename T> void array_destroy(T * arr);
@@ -26,9 +28,21 @@ std::ostream & array_print(const T *begin, const T *end)
 }
 
 template <typename T>
+std::ostream & array_println(const T *begin, const T *end)
+{
+    return array_print(begin, end) << '\n';
+}
+
+template <typename T>
 std::ostream & array_print(const T *arr, int length)
 {
     return array_print(arr, arr + length);
+}
+
+template <typename T>
+std::ostream & array_println(const T *arr, int length)
+{
+    return array_print(arr, length) << '\n';
 }
 
 template <typename T>
