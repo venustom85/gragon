@@ -12,6 +12,9 @@
 *.la
 *.a
 
+# vim swap file
+*.swp
+
 # test dir
 /test
 
