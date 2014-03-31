@@ -59,12 +59,17 @@ int _Runner<T>::run(int argc, char ** argv)
 
         ++case_count;
 
-        std::cout << "CASE " << case_count << ": \n";
+        std::cout << "================================\n\n";
+        std::cout << "CASE [" << case_count << "] \n";
         
         exec(obj);
 
+        std::cout << "\n";
+
         destroy(obj);
     }
+
+    std::cout << "================================\n";
 
     return 0;
 }

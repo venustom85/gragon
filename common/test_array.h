@@ -29,6 +29,10 @@ class SingleArrayRunner : public FileRunner< ArrayObject<E> >
 {
 public:
 
+    SingleArrayRunner(const char * filename)
+        : FileRunner< ArrayObject<E> > (filename)
+    {}
+
     ArrayObject<E> * create_object();
 
     void destroy(ArrayObject<E> * obj);
@@ -39,7 +43,7 @@ template <typename E>
 ArrayObject<E> * SingleArrayRunner<E>::create_object()
 {
     int length = 0;
-    E * array = array_read(this->_fin, length);
+    E * array = array_read<E>(this->_fin, length);
     if (array == NULL) {
         return NULL;
     }
