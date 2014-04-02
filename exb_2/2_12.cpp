@@ -9,15 +9,13 @@
 using namespace std;
 using namespace gragon;
 
-namespace {
+namespace exb_2_2_12 {
 
-    int remove_x(int * arr, int length, int x);
+int remove_x(int * arr, int length, int x);
 
-    int remove_x_2(int * arr, int length, int x);
+int remove_x_2(int * arr, int length, int x);
 
-}
-
-int exb_2_2_12(int argc, char *argv[])
+int g_main(int argc, char *argv[])
 {
     const char * filename = "2_12.input";
     ifstream fin(filename);
@@ -58,8 +56,6 @@ int exb_2_2_12(int argc, char *argv[])
 
     return 0;
 }
-
-namespace {
 
 int remove_x(int * arr, int length, int x)
 {

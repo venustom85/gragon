@@ -8,7 +8,7 @@
 #include "common/array.h"
 using namespace std;
 
-namespace {
+namespace exb_2_2_14 {
 
     template <typename T, typename Cond>
     void partition(T * begin, T * end, Cond cond);
@@ -19,9 +19,7 @@ namespace {
         }
     };
 
-}
-
-int exb_2_2_14(int argc, char ** argv)
+int g_main(int argc, char ** argv)
 {
     const char * filename = "2_14.input";
     ifstream fin(filename);
@@ -54,8 +52,6 @@ int exb_2_2_14(int argc, char ** argv)
 
     return 0;
 }
-
-namespace {
 
 template <typename T, typename Cond>
 void partition(T * begin, T * end, Cond cond)

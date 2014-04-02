@@ -7,13 +7,10 @@
 #include "common/test_array.h"
 using namespace std;
 
-namespace {
+namespace exb_2_2_15 {
 
-    int remove_duplicate(int * array, int length);
+int remove_duplicate(int * array, int length);
 
-}
-
-namespace ns_exb_2_2_15 {
 class Runner : public SingleArrayRunner<int>
 {
 public:
@@ -30,15 +27,12 @@ public:
         array_print(obj->array, obj->length) << '\n';
     }
 };
-}
 
-int exb_2_2_15(int argc, char ** argv)
+int g_main(int argc, char ** argv)
 {
-    ns_exb_2_2_15::Runner runner("2_15.input");
+    Runner runner("2_15.input");
     return runner.run(argc, argv);
 }
-
-namespace {
 
 int remove_duplicate(int * array, int length)
 {

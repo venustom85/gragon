@@ -9,13 +9,11 @@
 using namespace std;
 using namespace gragon;
 
-namespace {
+namespace exb_2_2_10 {
 
-    bool insert(int * arr, int length, int element);
+bool insert(int * arr, int length, int element);
 
-}
-
-int exb_2_2_10(int argc, char ** argv)
+int g_main(int argc, char ** argv)
 {
     const char * filename = "2_10.input";
     ifstream fin(filename);
@@ -62,8 +60,6 @@ int exb_2_2_10(int argc, char ** argv)
 
     return 0;
 }
-
-namespace {
 
 bool insert(int * arr, int length, int element)
 {
