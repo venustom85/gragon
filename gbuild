@@ -13,9 +13,10 @@ fi
 MODULE=$1
 CASE=$2
 
-FUNC_NAME="${MODULE}_$CASE"
-DECLARE="int $FUNC_NAME(int, char**);"
-MAIN="int main(int argc, char** argv) { return $FUNC_NAME(argc, argv); }"
+FUNC_NAME="g_main"
+NAMESPACE="${MODULE}_$CASE"
+DECLARE="namespace $NAMESPACE { int $FUNC_NAME(int, char**); } "
+MAIN="int main(int argc, char** argv) { return $NAMESPACE::$FUNC_NAME(argc, argv); }"
 EXEC=$CASE.run
 SRC=$CASE.cpp
 INC="-I. -I`pwd`"

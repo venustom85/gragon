@@ -8,13 +8,9 @@
 #include "common/test_array.h"
 using namespace std;
 
-namespace {
+namespace exb_2_2_18 {
 
-    int get_differ(int * a1, int s1, int * a2, int s2, int * r);
-
-}
-
-namespace ns_exb_2_2_18 {
+int get_differ(int * a1, int s1, int * a2, int s2, int * r);
 
 class Runner : public MultiArrayRunner<int>
 {
@@ -41,15 +37,11 @@ public:
     }
 };
 
-} // namespace ns_exb_2_2_18
-
-int exb_2_2_18(int argc, char ** argv)
+int g_main(int argc, char ** argv)
 {
-    ns_exb_2_2_18::Runner r("2_18.input");
+    Runner r("2_18.input");
     return r.run(argc, argv);
 }
-
-namespace {
 
 int get_differ(int * a1, int s1, int * a2, int s2, int * r)
 {
@@ -83,3 +75,4 @@ int get_differ(int * a1, int s1, int * a2, int s2, int * r)
 }
 
 }
+
