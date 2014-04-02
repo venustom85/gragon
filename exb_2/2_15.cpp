@@ -14,8 +14,6 @@ int remove_duplicate(int * array, int length);
 class Runner : public SingleArrayRunner<int>
 {
 public:
-    Runner(const char * filename) : SingleArrayRunner<int>(filename) {}
-
     void exec(ArrayObject<int> * obj)
     {
         cout << "Origin: ";
@@ -30,7 +28,7 @@ public:
 
 int g_main(int argc, char ** argv)
 {
-    Runner runner("2_15.input");
+    Runner runner;
     return runner.run(argc, argv);
 }
 

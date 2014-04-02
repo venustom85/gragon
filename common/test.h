@@ -11,7 +11,7 @@ public:
 
     virtual ~_Runner() {}
     
-    virtual bool init() = 0;
+    virtual bool init();
 
     virtual T * create_object() = 0;
 
@@ -24,24 +24,10 @@ public:
 };
 
 template <typename T>
-class FileRunner : public _Runner<T>
+bool _Runner<T>::init()
 {
-public:
-
-    FileRunner(const char *filename) 
-        : _Runner<T>(), _filename(filename), _fin(filename) {}
-
-    ~FileRunner();
-
-    virtual bool init();
-
-protected:
-
-    const char * _filename;
-
-    std::ifstream _fin;
-
-};
+    return true;
+}
 
 template <typename T>
 int _Runner<T>::run(int argc, char ** argv)
@@ -72,24 +58,6 @@ int _Runner<T>::run(int argc, char ** argv)
     std::cout << "================================\n";
 
     return 0;
-}
-
-template <typename T>
-bool FileRunner<T>::init()
-{
-    if (!_fin) {
-        std::cerr << "FAILED to open file " << _filename << '\n';
-        return false;
-    }
-    return true;
-}
-
-template <typename T>
-FileRunner<T>::~FileRunner()
-{
-    if (_fin) {
-        _fin.close();
-    }
 }
 
 #endif

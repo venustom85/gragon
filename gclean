@@ -1,0 +1,12 @@
+#!/bin/bash
+
+MODULE=$1
+
+if [ "$MODULE" == "" ]; then
+    echo "Usage: gclean <module>"
+    exit 1
+fi
+
+cd $MODULE
+rm *.run
+rm main.cpp

@@ -21,20 +21,13 @@ namespace exb_2_2_14 {
 
 int g_main(int argc, char ** argv)
 {
-    const char * filename = "2_14.input";
-    ifstream fin(filename);
-    if (!fin) {
-        cerr << "FAILED to open file " << filename << endl;
-        return 1;
-    }
-
     int * array = NULL;
     int length = 0;
     int case_count = 0;
 
     while (true) {
         case_count++;
-        array = array_read<int>(fin, length);
+        array = array_read<int>(cin, length);
         if (array == NULL) {
             break;
         }

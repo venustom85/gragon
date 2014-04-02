@@ -15,8 +15,8 @@ int get_union(int * a1, int s1, int * a2, int s2, int * r);
 class Runner : public MultiArrayRunner<int>
 {
 public:
-    Runner(const char * filename)
-        : MultiArrayRunner<int>(filename, 2)
+    Runner()
+        : MultiArrayRunner<int>(2)
     {}
 
     void exec(Arrays * obj)
@@ -39,7 +39,7 @@ public:
 
 int g_main(int argc, char ** argv)
 {
-    Runner r("2_17.input");
+    Runner r;
     return r.run(argc, argv);
 }
 

@@ -2,6 +2,7 @@
 #define TEST_ARRAY_H 1
 
 #include <vector>
+#include <iostream>
 
 #include "test.h"
 #include "array.h"
@@ -26,13 +27,9 @@ std::ostream & operator<< (std::ostream & out, const ArrayObject<E> & a)
 }
 
 template <typename E>
-class SingleArrayRunner : public FileRunner< ArrayObject<E> >
+class SingleArrayRunner : public _Runner< ArrayObject<E> >
 {
 public:
-
-    SingleArrayRunner(const char * filename)
-        : FileRunner< ArrayObject<E> > (filename)
-    {}
 
     ArrayObject<E> * create_object();
 
@@ -41,14 +38,14 @@ public:
 };
 
 template <typename E>
-class MultiArrayRunner : public FileRunner< std::vector< ArrayObject<E> > >
+class MultiArrayRunner : public _Runner< std::vector< ArrayObject<E> > >
 {
 public:
 
     typedef std::vector< ArrayObject<E> >  Arrays;
 
-    MultiArrayRunner(const char * filename, int num_arrays)
-        : FileRunner< std::vector< ArrayObject<E> > > (filename), _num_arrays(num_arrays)
+    MultiArrayRunner(int num_arrays)
+        : _Runner< std::vector< ArrayObject<E> > > (), _num_arrays(num_arrays)
     {}
 
     Arrays * create_object();
@@ -66,7 +63,7 @@ typename MultiArrayRunner<E>::Arrays * MultiArrayRunner<E>::create_object()
 
     for (int c = 0; c < _num_arrays; ++c) {
         int length = 0;
-        E * array = array_read<E>(this->_fin, length);
+        E * array = array_read<E>(std::cin, length);
         if (array == NULL) {
             delete as;
             return NULL;
@@ -91,7 +88,7 @@ template <typename E>
 ArrayObject<E> * SingleArrayRunner<E>::create_object()
 {
     int length = 0;
-    E * array = array_read<E>(this->_fin, length);
+    E * array = array_read<E>(std::cin, length);
     if (array == NULL) {
         return NULL;
     }

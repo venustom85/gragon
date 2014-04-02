@@ -17,26 +17,19 @@ int remove_x_2(int * arr, int length, int x);
 
 int g_main(int argc, char *argv[])
 {
-    const char * filename = "2_12.input";
-    ifstream fin(filename);
-    if (!fin) {
-        cerr << "FAILED to open file " << filename << endl;
-        return 1;
-    }
-
     int length = 0;
     int * arr = NULL;
     int x = 0;
     int count = 0;
 
     while (true) {
-        arr = array_read<int>(fin, length);
+        arr = array_read<int>(cin, length);
         if (arr == NULL) {
             break;
         }
 
-        fin >> x;
-        if (!fin) {
+        cin >> x;
+        if (!cin) {
             cerr << "FAILED to read x" << endl;
             break;
         }

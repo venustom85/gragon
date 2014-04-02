@@ -13,6 +13,7 @@ fi
 MODULE=$1
 CASE=$2
 
+TOP_DIR=`pwd`
 FUNC_NAME="g_main"
 NAMESPACE="${MODULE}_$CASE"
 DECLARE="namespace $NAMESPACE { int $FUNC_NAME(int, char**); } "
@@ -31,4 +32,5 @@ fi
 
 cd $MODULE
 echo "$DECLARE $MAIN" > main.cpp
-(g++ $INC -o $EXEC main.cpp $SRC $GR_LIB) && echo "Build success, use grun to show it"
+#(g++ $INC -o $EXEC main.cpp $SRC $GR_LIB) && echo "Build success, use grun to show it"
+(g++ $INC -o $EXEC main.cpp $SRC $GR_LIB) && (cd $TOP_DIR; ./grun $@)

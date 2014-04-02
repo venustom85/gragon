@@ -15,18 +15,11 @@ bool insert(int * arr, int length, int element);
 
 int g_main(int argc, char ** argv)
 {
-    const char * filename = "2_10.input";
-    ifstream fin(filename);
-    if (!fin) {
-        cerr << "FAILED to open file " << filename << endl;
-        return 1;
-    }
-
     int i = 0;
     while (true) {
         ++i;
         int length = 0;
-        int * array = array_read<int>(fin, length);
+        int * array = array_read<int>(cin, length);
         if (array != NULL) {
             array = array_expand(array, length);
         } else {
@@ -37,8 +30,8 @@ int g_main(int argc, char ** argv)
         array_print(array, length) << '\n';
         
         int num = 0;
-        fin >> num;
-        if (!fin) {
+        cin >> num;
+        if (!cin) {
             cerr << "NEED num to insert\n";
             array_destroy(array);
             return 1;
@@ -55,8 +48,6 @@ int g_main(int argc, char ** argv)
         
         array_destroy(array);
     }
-
-    fin.close();
 
     return 0;
 }

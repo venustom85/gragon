@@ -14,11 +14,16 @@ MODULE=$1
 CASE=$2
 
 EXEC=$CASE.run
+INPUT=$CASE.input
 
 cd $MODULE
 if [ -e $EXEC ]; then
     shift; shift;
-    ./$EXEC $@
+    if [ -e $INPUT ]; then
+        cat $INPUT | ./$EXEC $@
+    else
+        ./$EXEC $@
+    fi
 else
     echo "NO $EXEC found, please use gbuild to make it"
 fi
