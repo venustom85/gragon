@@ -33,4 +33,4 @@ fi
 cd $MODULE
 echo "$DECLARE $MAIN" > main.cpp
 #(g++ $INC -o $EXEC main.cpp $SRC $GR_LIB) && echo "Build success, use grun to show it"
-(g++ $INC -o $EXEC main.cpp $SRC $GR_LIB) && (cd $TOP_DIR; ./grun $@)
+(g++ $INC -o $EXEC main.cpp $SRC $GR_LIB) && (echo "Build success!"; cd $TOP_DIR; ./grun $@)
