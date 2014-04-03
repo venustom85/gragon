@@ -123,6 +123,12 @@ std::ostream & list_print(ListNode<T> * head)
 }
 
 template <typename T>
+std::ostream & operator<< (std::ostream & out, const ListNode<T> * head)
+{
+    return list_print(head);
+}
+
+template <typename T>
 std::ostream & list_print(ListNode<T> * begin, ListNode<T> * end)
 {
     std::cout << '[';
