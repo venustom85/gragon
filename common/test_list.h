@@ -4,14 +4,14 @@
 #include <vector>
 
 #include "test.h"
-#include "array.h"
+#include "list.h"
 
 template <typename E>
-class MultiListRunner : public _Runner< std::vector<ListNode*> >
+class MultiListRunner : public _Runner< std::vector<ListNode<E>*> >
 {
 public:
 
-    typedef std::vector<ListNode*> Lists;
+    typedef std::vector<ListNode<E>*> Lists;
 
     MultiListRunner(int num_list)
         : _Runner<Lists>(), _num_list(num_list)
@@ -31,8 +31,9 @@ typename MultiListRunner<E>::Lists * MultiListRunner<E>::create_object()
     Lists * ls = new Lists;
 
     for (int i = 0; i < _num_list; ++i) {
-        ListNode<E> * L = list_read<E>(std::in);
-        if (L == NULL) {
+        int length;
+        ListNode<E> * L = list_read<E>(std::cin, length);
+        if (L == NULL && length < 0) {
             delete ls;
             return NULL;
         }

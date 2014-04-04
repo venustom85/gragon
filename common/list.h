@@ -24,10 +24,11 @@ ListNode<T> * list_read(std::istream &in, int &length)
     in >> length;
     if (!in) {
         gragon::set_error_message("NO length of list found in stream");
+        length = -1;
         return NULL;
     }
 
-    if (length <= 0) {
+    if (length < 0) {
         sprintf(gragon::get_error_buf(), "ERROR length of list: %d", length);
         return NULL;
     }
@@ -123,9 +124,9 @@ std::ostream & list_print(ListNode<T> * head)
 }
 
 template <typename T>
-std::ostream & operator<< (std::ostream & out, const ListNode<T> * head)
+std::ostream & operator<< (std::ostream & out, ListNode<T> * head)
 {
-    return list_print(head);
+    return list_print<T>(head);
 }
 
 template <typename T>
