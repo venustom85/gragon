@@ -1,0 +1,54 @@
+#!/bin/bash
+
+MODULE=$1
+CASE=$2
+
+function gen_case_src()
+{
+    echo -e "/*
+  */
+
+namespace ${MODULE}_$CASE {
+
+
+int g_main(int argc, char ** argv)
+{
+    Runner r;
+    return r.run(argc, argv);
+}
+
+} // namespace ${MODULE}_$CASE
+" > $CASE.cpp
+}
+
+function usage()
+{
+    echo "usage: gnew <module> <case>"
+}
+
+if [ "$MODULE" == "" ]; then
+    usage
+    exit;
+fi
+
+if [ "$CASE" == "" ]; then
+    usage
+    exit;
+fi
+
+if [ ! -d $MODULE ]; then
+    echo "$MODULE is not a directory"
+    exit
+fi
+
+cd $MODULE
+if [ ! -e $CASE.cpp ]; then
+    gen_case_src
+else
+    echo "$CASE.cpp already exists"
+fi
+if [ ! -e $CASE.input ]; then
+    touch $CASE.input
+else
+    echo "$CASE.input already exists"
+fi
