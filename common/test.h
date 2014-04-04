@@ -57,6 +57,10 @@ int _Runner<T>::run(int argc, char ** argv)
 
     std::cout << "================================\n";
 
+    if (case_count == 0) {
+        std::cout << "WARN: no test case to run\n";
+    }
+
     return 0;
 }
 
