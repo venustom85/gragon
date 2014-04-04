@@ -58,7 +58,7 @@ int _Runner<T>::run(int argc, char ** argv)
     std::cout << "================================\n";
 
     if (case_count == 0) {
-        std::cout << "WARN: no test case to run\n";
+        std::cout << "WARN: NO test case to run! Maybe the input file is empty?\n";
     }
 
     return 0;
