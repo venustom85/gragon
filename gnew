@@ -52,3 +52,6 @@ if [ ! -e $CASE.input ]; then
 else
     echo "$CASE.input already exists"
 fi
+
+git add $CASE.cpp $CASE.input
+vi -O $CASE.cpp $CASE.input
