@@ -25,6 +25,14 @@ private:
     int _num_list;
 };
 
+#define CLASS_LIST_RUNNER(type,n) \
+class Runner : public MultiListRunner<type> \
+{ \
+public: \
+    Runner() : MultiListRunner<type>(n) {} \
+    void exec(Lists * obj); \
+}; 
+
 template <typename E>
 typename MultiListRunner<E>::Lists * MultiListRunner<E>::create_object()
 {
