@@ -56,6 +56,14 @@ protected:
     int _num_arrays;
 };
 
+#define CLASS_ARRAY_RUNNER(type,n) \
+class Runner : public MultiArrayRunner<type> \
+{ \
+public: \
+    Runner() : MultiArrayRunner<type>(n) {} \
+    void exec(Arrays * obj); \
+};
+
 template <typename E>
 typename MultiArrayRunner<E>::Arrays * MultiArrayRunner<E>::create_object()
 {
