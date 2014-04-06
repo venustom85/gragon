@@ -31,6 +31,30 @@ struct ListNode
 
 };
 
+
+template <typename T> ListNode<T> * list_read(std::istream &in, int &length);
+template <typename T> ListNode<T> * list_read(std::istream &in);
+template <typename T> ListNode<T> * list_read_from_file(const char *filename, int &length);
+template <typename T> ListNode<T> list_read_from_file(const char *filename);
+template <typename T> void list_destroy(ListNode<T> * head);
+template <typename T> ListNode<T> * list_add_head_node(ListNode<T> * head);
+template <typename T> std::ostream & list_print(ListNode<T> * head);
+template <typename T> std::ostream & operator<< (std::ostream & out, ListNode<T> * head);
+template <typename T> std::ostream & list_print(ListNode<T> * begin, ListNode<T> * end);
+template <typename T> ListNode<T> * list_clone(ListNode<T> * head);
+
+/**
+ * Converte to a circular list with rear pointer
+ * @param head - head pointer of original list.
+ * @return rear pointer of the circular list
+ */
+template <typename T>
+ListNode<T> * list_to_circular(ListNode<T> * head);
+
+template <typename T> void list_destroy_circular(ListNode<T> * rear);
+template <typename T> std::ostream & list_print_circular(ListNode<T> * rear);
+
+
 template <typename T>
 ListNode<T> * list_read(std::istream &in, int &length)
 {
@@ -172,6 +196,49 @@ ListNode<T> * list_clone(ListNode<T> * head)
         c_head.next->prev = NULL;
     }
     return c_head.next;
+}
+
+template <typename T>
+ListNode<T> * list_to_circular(ListNode<T> * head)
+{
+    if (head == NULL) {
+        return NULL;
+    }
+
+    ListNode<T> * r = head;
+    while (r->next != NULL) {
+        r = r->next;
+    }
+
+    r->next = head;
+    head->prev = r;
+    return r;
+}
+
+template <typename T>
+void list_destroy_circular(ListNode<T> * rear)
+{
+    if (rear == NULL) {
+        return;
+    }
+
+    ListNode<T> * head = rear->next;
+    rear->next = NULL;
+    list_destroy(head);
+}
+
+template <typename T>
+std::ostream & list_print_circular(ListNode<T> * rear)
+{
+    if (rear == NULL) {
+        return list_print(rear);
+    }
+
+    ListNode<T> * head = rear->next;
+    rear->next = NULL;
+    std::ostream & out = list_print(head);
+    rear->next = head;
+    return out;
 }
 
 #endif
