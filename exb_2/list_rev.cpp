@@ -21,6 +21,23 @@ node_t * reverse(node_t * h)
     return new_head;
 }
 
+node_t * reverse_2(node_t * h)
+{
+    if (h == NULL) {
+        return NULL;
+    }
+
+    node_t * last = NULL;
+    node_t * next = NULL;
+    while (h != NULL) {
+        next = h->next;
+        h->next = last;
+        last = h;
+        h = next;
+    }
+    return last;
+}
+
 node_t * reverse_recursively(node_t * h)
 {
     if (h == NULL || h->next == NULL) {
@@ -41,7 +58,7 @@ void Runner::exec(Lists * obj)
     cout << "Origin list: " << h << endl;
 
     node_t * a = list_clone(h);
-    a = reverse(a);
+    a = reverse_2(a);
     cout << "Reverse: " << a << endl;
 
     node_t * b = list_clone(h);
