@@ -16,6 +16,7 @@ template <typename T> T * array_read(std::istream & in, int & length);
 template <typename T> T * array_read_from_file(const char * filename, int & length);
 template <typename T> void array_destroy(T * arr);
 template <typename T> T * array_expand(T * arr, int length);
+template <typename T> T * array_clone(T * arr, int size);
 
 template <typename T>
 std::ostream & array_print(const T *begin, const T *end)
@@ -114,6 +115,21 @@ T * array_expand(T * arr, int length)
     array_destroy(arr);
 
     return new_arr;
+}
+
+template <typename T> 
+T * array_clone(T * arr, int size)
+{
+    if (arr == NULL || size < 0) {
+        return NULL;
+    }
+
+    T * clone = new T[size];
+    for (int i = 0; i < size; ++i) {
+        clone[i] = arr[i];
+    }
+
+    return clone;
 }
 
 #endif

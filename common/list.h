@@ -16,6 +16,19 @@ struct ListNode
 
     ListNode() : prev(NULL), data(), next(NULL) {}
     ListNode(T d) : prev(NULL), data(d), next(NULL) {}
+    
+    ListNode(const ListNode<T> & n)
+        : prev(NULL), data(n.data), next(NULL)
+    {}
+
+    ListNode<T> & operator= (const ListNode<T> & n)
+    {
+        if (this != &n) {
+            data = n.data;
+        }
+        return (*this);
+    }
+
 };
 
 template <typename T>
@@ -138,6 +151,27 @@ std::ostream & list_print(ListNode<T> * begin, ListNode<T> * end)
         begin = begin->next;
     }
     return std::cout << ']';
+}
+
+template <typename T>
+ListNode<T> * list_clone(ListNode<T> * head)
+{
+    typedef ListNode<T> node_t;
+    node_t c_head;
+    node_t * c = &c_head;
+    node_t * n = NULL;
+    while (head != NULL) {
+        n = new node_t(*head);
+        n->prev = c;
+        c->next = n;
+        c = n;
+        head = head->next;
+    }
+
+    if (c_head.next != NULL) {
+        c_head.next->prev = NULL;
+    }
+    return c_head.next;
 }
 
 #endif
