@@ -44,14 +44,11 @@ fi
 cd $MODULE
 if [ ! -e $CASE.cpp ]; then
     gen_case_src
-else
-    echo "$CASE.cpp already exists"
+    git add $CASE.cpp
 fi
 if [ ! -e $CASE.input ]; then
     touch $CASE.input
-else
-    echo "$CASE.input already exists"
+    git add $CASE.input
 fi
 
-git add $CASE.cpp $CASE.input
 vi -O $CASE.cpp $CASE.input
