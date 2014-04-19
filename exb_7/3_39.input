@@ -1,0 +1,31 @@
+1
+a
+
+2
+a
+b a L
+
+2
+a
+b a R
+
+3
+a
+b a L
+c a R
+
+5
+a
+b a L
+c a R
+d b L
+e d R
+
+5
+a
+b a L
+c a R
+d c L
+e c R
+
+0
