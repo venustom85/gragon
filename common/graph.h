@@ -39,6 +39,7 @@ struct AdjList
     {
         int id;
         E   weight;
+        ArcNode * next;
     };
 
     GraphType type;
@@ -46,7 +47,7 @@ struct AdjList
     int num_edges;
     V * vertex;
 
-    ArcNode * arc_heads;
+    ArcNode ** arc_heads;
 };
 
 // ---------------------------------------------------------------------
@@ -183,9 +184,104 @@ std::ostream & operator<< (std::ostream & out, const AdjMatrix<V,E> * am)
 template <typename V, typename E>
 void graph_destroy(AdjMatrix<V,E> * am)
 {
-    delete[] vertex;
-    delete[] edges;
+    delete[] am->vertex;
+    delete[] am->edges;
     delete am;
+}
+
+template <typename V, typename E>
+AdjList<V,E> * adj_list_read(std::istream & in, GraphType type)
+{
+    int num_vertex, num_edges;
+    if (!(in >> num_vertex >> num_edges)) {
+        return NULL;
+    } else if (num_vertex <= 0 || num_edges < 0) {
+        return NULL;
+    }
+
+    AdjList<V,E> * a = new AdjList<V,E>;
+    a->type = type;
+    a->num_vertex = num_vertex;
+    a->num_edges = num_edges;
+
+    std::map<V,int> v_map;
+    V * vertex_list = new V[num_vertex];
+    for (int i = 0; i < num_vertex; ++i) {
+        in >> vertex_list[i];
+        v_map[vertex_list[i]] = i;
+    }
+    a->vertex = vertex_list;
+
+    typedef typename AdjList<V,E>::ArcNode arc_node;
+    a->arc_heads = new arc_node* [num_vertex];
+    for (int i = 0; i < num_vertex; ++i) {
+        a->arc_heads[i] = NULL;
+    }
+
+    V v1, v2;
+    E e;
+    for (int i = 0; i < num_edges; ++i) {
+        if (is_weighted(type)) {
+            in >> v1 >> v2 >> e;
+        } else {
+            in >> v1 >> v2;
+            e = E(1);
+        }
+
+        int index1 = v_map[v1];
+        int index2 = v_map[v2];
+        arc_node * an = new arc_node;
+        an->id = index2;
+        an->weight = e;
+        an->next = a->arc_heads[index1];
+        a->arc_heads[index1] = an;
+
+        if (!is_directed(type)) {
+            an = new arc_node;
+            an->id = index1;
+            an->weight = e;
+            an->next = a->arc_heads[index2];
+            a->arc_heads[index2] = an;
+        }
+    }
+
+    return a;
+}
+
+template <typename V, typename E>
+std::ostream & operator<< (std::ostream & out, const AdjList<V,E> * a)
+{
+    out << "type:   " << type_to_string(a) << '\n';
+    out << "vertex: " << a->num_vertex << '\n';
+    out << "edges:  " << a->num_edges << '\n';
+    for (int i = 0; i < a->num_vertex; ++i) {
+        out << '[' << i << ']' << a->vertex[i] << "  ";
+    }
+    out << '\n';
+
+    typedef typename AdjList<V,E>::ArcNode arc_t;
+    for (int i = 0; i < a->num_vertex; ++i) {
+        int arc_count = 0;
+        const arc_t * p = a->arc_heads[i];
+        while (p != NULL) {
+            out << '(' << a->vertex[i] << " -> " << a->vertex[p->id] << ')' << '[' << p->weight << ']' << "  ";
+            p = p->next;
+            ++arc_count;
+        }
+        if (arc_count > 0) {
+            out << '\n';
+        }
+    }
+
+    return out;
+}
+
+template <typename V, typename E>
+void graph_destroy(AdjList<V,E> * a)
+{
+    delete[] a->vertex;
+    delete[] a->arc_heads;
+    delete a;
 }
 
 #endif
