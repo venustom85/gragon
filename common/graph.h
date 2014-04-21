@@ -32,6 +32,23 @@ struct AdjMatrix
     ~AdjMatrix() { delete[] vertex; delete[] edges; }
 };
 
+template <typename V, typename E = int>
+struct AdjList
+{
+    struct ArcNode
+    {
+        int id;
+        E   weight;
+    };
+
+    GraphType type;
+    int num_vertex;
+    int num_edges;
+    V * vertex;
+
+    ArcNode * arc_heads;
+};
+
 // ---------------------------------------------------------------------
 
 template <typename V, typename E>
@@ -42,15 +59,27 @@ AdjMatrix<V,int> * adj_matrix_read(std::istream & in, GraphType type)
 { return adj_matrix_read<V,int>(in, type); }
 
 template <typename V, typename E>
-std::ostream & graph_print(std::ostream & out, const AdjMatrix<V,E> * am);
+AdjList<V,E> * adj_list_read(std::istream & in, GraphType type);
+
+template <typename V>
+AdjList<V,int> * adj_list_read(std::istream & in, GraphType type)
+{ return adj_list_read<V,int>(in, type); }
+
+template <typename G>
+std::ostream & graph_print(std::ostream & out, const G * graph)
+{ return out << graph; }
 
 template <typename V, typename E>
-std::ostream & adj_matrix_print(std::ostream & out, const AdjMatrix<V,E> * am)
-{ return graph_print(out, am); }
+std::ostream & operator<< (std::ostream & out, const AdjMatrix<V,E> * am);
 
 template <typename V, typename E>
-std::ostream & operator<< (std::ostream & out, const AdjMatrix<V,E> * am)
-{ return graph_print(out, am); }
+std::ostream & operator<< (std::ostream & out, const AdjList<V,E> * a);
+
+template <typename V, typename E>
+void graph_destroy(AdjMatrix<V,E> * am);
+
+template <typename V, typename E>
+void graph_destroy(AdjList<V,E> * a);
 
 // ---------------------------------------------------------------------
 
@@ -131,7 +160,7 @@ inline std::ostream & output(std::ostream & out, double d)
 }
 
 template <typename V, typename E>
-std::ostream & graph_print(std::ostream & out, const AdjMatrix<V,E> * am)
+std::ostream & operator<< (std::ostream & out, const AdjMatrix<V,E> * am)
 {
     out << "type:   " << type_to_string(am) << '\n';
     out << "vertex: " << am->num_vertex << '\n';
@@ -149,6 +178,14 @@ std::ostream & graph_print(std::ostream & out, const AdjMatrix<V,E> * am)
     }
 
     return out;
+}
+
+template <typename V, typename E>
+void graph_destroy(AdjMatrix<V,E> * am)
+{
+    delete[] vertex;
+    delete[] edges;
+    delete am;
 }
 
 #endif
