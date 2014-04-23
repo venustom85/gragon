@@ -20,20 +20,32 @@ inline bool is_directed(GraphType type) { return type & 0x01; }
 inline bool is_weighted(GraphType type) { return type & 0x02; }
 
 template <typename V, typename E = int>
-struct AdjMatrix
+struct BaseGraph
 {
     GraphType type;
     int num_vertex;
     int num_edges;
-    V * vertex;
-    E * edges;
 
-    AdjMatrix() : vertex(NULL), edges(NULL) {}
-    ~AdjMatrix() { delete[] vertex; delete[] edges; }
+    V * vertex;
+
+    BaseGraph() : num_vertex(0), num_edges(0), vertex(NULL) {}
+    ~BaseGraph() { delete[] vertex; }
+
+    typedef V vertex_t;
+    typedef E weight_t;
 };
 
 template <typename V, typename E = int>
-struct AdjList
+struct AdjMatrix : public BaseGraph<V,E>
+{
+    E * edges;
+
+    AdjMatrix() : BaseGraph<V,E>(), edges(NULL) {}
+    ~AdjMatrix() { delete[] edges; }
+};
+
+template <typename V, typename E = int>
+struct AdjList : public BaseGraph<V,E>
 {
     struct ArcNode
     {
@@ -42,12 +54,13 @@ struct AdjList
         ArcNode * next;
     };
 
-    GraphType type;
-    int num_vertex;
-    int num_edges;
-    V * vertex;
-
     ArcNode ** arc_heads;
+
+    AdjList() : BaseGraph<V,E>(), arc_heads(NULL) {}
+    ~AdjList() { delete[] arc_heads; }
+
+    typedef V vertex_t;
+    typedef E weight_t;
 };
 
 // ---------------------------------------------------------------------
@@ -82,7 +95,22 @@ void graph_destroy(AdjMatrix<V,E> * am);
 template <typename V, typename E>
 void graph_destroy(AdjList<V,E> * a);
 
+template <typename V, typename E>
+int index_of(const BaseGraph<V,E> * g, const V & v);
+
 // ---------------------------------------------------------------------
+
+template <typename V, typename E>
+int index_of(const BaseGraph<V,E> * g, const V & v)
+{
+    int i = 0;
+    for (; i < g->num_vertex; ++i) {
+        if (g->vertex[i] == v) {
+            break;
+        }
+    }
+    return (i < g->num_vertex) ? i : -1;
+}
 
 template <typename V, typename E>
 AdjMatrix<V,E> * adj_matrix_read(std::istream & in, GraphType type)
@@ -171,7 +199,14 @@ std::ostream & operator<< (std::ostream & out, const AdjMatrix<V,E> * am)
     }
     out << '\n';
 
+    output(out, ' ');
     for (int i = 0; i < am->num_vertex; ++i) {
+        output(out, am->vertex[i]);
+    }
+    out << '\n';
+
+    for (int i = 0; i < am->num_vertex; ++i) {
+        output(out, am->vertex[i]);
         for (int j = 0; j < am->num_vertex; ++j) {
             output(out, am->edges[i * am->num_vertex + j]);
         }
@@ -184,8 +219,6 @@ std::ostream & operator<< (std::ostream & out, const AdjMatrix<V,E> * am)
 template <typename V, typename E>
 void graph_destroy(AdjMatrix<V,E> * am)
 {
-    delete[] am->vertex;
-    delete[] am->edges;
     delete am;
 }
 
@@ -279,8 +312,6 @@ std::ostream & operator<< (std::ostream & out, const AdjList<V,E> * a)
 template <typename V, typename E>
 void graph_destroy(AdjList<V,E> * a)
 {
-    delete[] a->vertex;
-    delete[] a->arc_heads;
     delete a;
 }
 
