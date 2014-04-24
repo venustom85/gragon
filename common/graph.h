@@ -7,6 +7,7 @@
 #include <map>
 #include <iomanip>
 #include <sstream>
+#include <limits>
 
 enum GraphType
 {
@@ -61,6 +62,20 @@ struct AdjList : public BaseGraph<V,E>
 
     typedef V vertex_t;
     typedef E weight_t;
+};
+
+template <typename T>
+struct WeightTraits
+{
+    static T infinity()
+    {
+        return std::numeric_limits<T>::max();
+    }
+
+    static T zero()
+    {
+        return static_cast<T>(0);
+    }
 };
 
 // ---------------------------------------------------------------------
@@ -123,6 +138,7 @@ AdjMatrix<V,E> * adj_matrix_read(std::istream & in, GraphType type)
     }
 
     AdjMatrix<V,E> * am = new AdjMatrix<V,E>;
+    am->type = type;
     am->num_vertex = num_vertex;
     am->num_edges = num_edges;
     am->vertex = new V[num_vertex];
@@ -130,10 +146,20 @@ AdjMatrix<V,E> * adj_matrix_read(std::istream & in, GraphType type)
         am->vertex[i] = V();
     }
 
-    int total = num_edges * num_edges;
+    int total = num_vertex * num_vertex;
     E * edges = new E[total];
-    for (int i = 0; i < total; ++i) {
-        edges[i] = E();
+    for (int i = 0; i < num_vertex; ++i) {
+        for (int j = 0; j < num_vertex; ++j) {
+            if (j != i) {
+                if (is_weighted(type)) {
+                    edges[i * num_vertex + j] = WeightTraits<E>::infinity();
+                } else {
+                    edges[i * num_vertex + j] = WeightTraits<E>::zero();
+                }
+            } else {
+                edges[i * num_vertex + j] = WeightTraits<E>::zero();
+            }
+        }
     }
     am->edges = edges;
 
@@ -180,12 +206,20 @@ const char * type_to_string(const G * graph)
 template <typename T>
 std::ostream & output(std::ostream & out, const T & t)
 {
-    return out << std::setw(10) << t;
+    if (t == WeightTraits<T>::infinity()) {
+        return out << std::setw(10) << '*';
+    } else {
+        return out << std::setw(10) << t;
+    }
 }
 
 inline std::ostream & output(std::ostream & out, double d)
 {
-    return out << std::setprecision(4) << std::setw(10) << d;
+    if (d == std::numeric_limits<double>::max()) {
+        return out << std::setw(10) << '*';
+    } else {
+        return out << std::setprecision(4) << std::setw(10) << d;
+    }
 }
 
 template <typename V, typename E>
