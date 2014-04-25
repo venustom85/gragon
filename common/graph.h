@@ -43,6 +43,16 @@ struct AdjMatrix : public BaseGraph<V,E>
 
     AdjMatrix() : BaseGraph<V,E>(), edges(NULL) {}
     ~AdjMatrix() { delete[] edges; }
+
+    E & e(int i, int j)
+    {
+        return edges[i * this->num_vertex + j];
+    }
+
+    const E & e(int i, int j) const
+    {
+        return edges[i * this->num_vertex + j];
+    }
 };
 
 template <typename V, typename E = int>
