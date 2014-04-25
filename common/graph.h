@@ -53,6 +53,8 @@ struct AdjMatrix : public BaseGraph<V,E>
     {
         return edges[i * this->num_vertex + j];
     }
+
+    bool connected(int i, int j) const;
 };
 
 template <typename V, typename E = int>
@@ -199,6 +201,14 @@ AdjMatrix<V,E> * adj_matrix_read(std::istream & in, GraphType type)
     }
 
     return am;
+}
+
+template <typename V, typename E>
+bool AdjMatrix<V,E>::connected(int i, int j) const
+{
+    return is_weighted(this->type) 
+        ? this->e(i,j) != WeightTraits<E>::infinity()
+        : this->e(i,j) != WeightTraits<E>::zero();
 }
 
 template <typename G>
