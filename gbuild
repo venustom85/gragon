@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 usage()
 {
     echo "usage: `basename $0` <module> <case> [param1 [param2 ...]]"
