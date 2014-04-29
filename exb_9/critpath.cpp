@@ -5,6 +5,7 @@
 #include <queue>
 #include <stack>
 #include <cstring>
+#include "common/array_ptr.h"
 using namespace std;
 
 namespace exb_9_critpath {
@@ -57,7 +58,7 @@ void print_all_critical_path(const graph_t * g)
     }
 
     const int N = g->num_vertex;
-    int * indeg = new int[N];
+    array_ptr<int> indeg(new int[N]);
     memset(indeg, 0, sizeof(int) * N);
     for (int i = 0; i < N; ++i) {
         arc_t * p = g->arc_heads[i];
@@ -138,7 +139,6 @@ void print_all_critical_path(const graph_t * g)
 
     delete[] path;
     delete[] mat;
-    delete[] indeg;
     delete[] E;
     delete[] L;
 }
